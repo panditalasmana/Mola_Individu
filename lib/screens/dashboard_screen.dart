@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'car_detail_screen.dart';
 
+/// Halaman utama (dashboard) aplikasi sewa mobil.
+/// Menampilkan daftar mobil mewah, fitur pencarian, dan navigasi bawah.
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -9,10 +11,11 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // Indeks untuk BottomNavigationBar
 
   @override
   Widget build(BuildContext context) {
+    // 🔹 Data list mobil disimpan dalam bentuk List<Map>
     final cars = [
       {
         'name': 'Porsche 911',
@@ -48,15 +51,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+
+      // 🔹 AppBar (bagian atas)
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 0, // tanpa bayangan
         title: const Row(
           children: [
+            // Foto profil kecil di kiri
             CircleAvatar(
               backgroundImage: AssetImage('assets/profile.jpg'),
             ),
             SizedBox(width: 10),
+            // Teks sapaan
             Text(
               "Welcome!",
               style: TextStyle(
@@ -67,17 +74,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
         actions: [
+          // Tombol menuju halaman profil
           IconButton(
             icon: const Icon(Icons.person_outline, color: Colors.black),
             onPressed: () => Navigator.pushNamed(context, '/profile'),
           ),
         ],
       ),
+
+      // 🔹 Isi utama halaman
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            // Search Bar
+            // 🔸 Kolom pencarian (tidak interaktif, hanya tampilan)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
@@ -94,13 +104,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(height: 20),
 
+            // 🔸 Judul bagian daftar mobil
             const Text(
               "Luxury Cars",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
-            // Horizontal List of Cars
+            // 🔸 Daftar mobil horizontal (scroll ke samping)
             SizedBox(
               height: 260,
               child: ListView.builder(
@@ -108,6 +119,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 itemCount: cars.length,
                 itemBuilder: (context, index) {
                   final car = cars[index];
+
+                  // 🔹 Setiap kartu mobil bisa diklik untuk ke halaman detail
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -131,12 +144,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ],
                       ),
+
+                      // 🔹 Isi kartu mobil
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Gambar mobil di atas
                           ClipRRect(
                             borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(16)),
+                              top: Radius.circular(16),
+                            ),
                             child: Image.asset(
                               car['image']!,
                               height: 130,
@@ -144,22 +161,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               fit: BoxFit.cover,
                             ),
                           ),
+
+                          // Nama mobil
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               car['name']!,
                               style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
+
+                          // Harga dan rating mobil
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
                               children: [
-                                Text(car['price']!,
-                                    style: const TextStyle(
-                                        color: Colors.grey, fontSize: 13)),
+                                Text(
+                                  car['price']!,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                  ),
+                                ),
                                 const Spacer(),
                                 const Icon(Icons.star,
                                     color: Colors.amber, size: 18),
@@ -177,13 +204,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
       ),
-      // Bottom Navigation Bar
+
+      // 🔹 Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
           });
+
+          // Navigasi jika tab Profile diklik
           if (index == 2) {
             Navigator.pushNamed(context, '/profile');
           }
